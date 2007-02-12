@@ -1,5 +1,5 @@
 Summary:	RtAudio - set of C++ classes providing common API for realtime audio I/O
-Summary(pl):	RtAudio - zbi髍 klas C++ udost阷niaj眂ych wsp髄ne API do we/wy d紈i阫u
+Summary(pl.UTF-8):   RtAudio - zbi贸r klas C++ udost臋pniaj膮cych wsp贸lne API do we/wy d藕wi臋ku
 Name:		rtaudio
 Version:	3.0.3
 Release:	1
@@ -20,15 +20,15 @@ audio input/output across Linux (native ALSA, JACK, and OSS), SGI,
 Macintosh OS X (CoreAudio), and Windows (DirectSound and ASIO)
 operating systems.
 
-%description -l pl
-RtAudio to zbi髍 klas C++ udost阷niaj眂ych wsp髄ne API dla
-wej禼ia/wyj禼ia d紈i阫u w czasie rzeczywistym na systemach
+%description -l pl.UTF-8
+RtAudio to zbi贸r klas C++ udost臋pniaj膮cych wsp贸lne API dla
+wej艣cia/wyj艣cia d藕wi臋ku w czasie rzeczywistym na systemach
 operacyjnych Linux (natywna ALSA, JACK, OSS), SGI, MacOS X (CoreAudio)
 i Windows (DirectSound i ASIO).
 
 %package devel
 Summary:	Header files for RtAudio library
-Summary(pl):	Pliki nag丑wkowe biblioteki RtAudio
+Summary(pl.UTF-8):   Pliki nag艂贸wkowe biblioteki RtAudio
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	alsa-lib-devel
@@ -38,19 +38,19 @@ Requires:	libstdc++-devel
 %description devel
 Header files for RtAudio library.
 
-%description devel -l pl
-Pliki nag丑wkowe biblioteki RtAudio.
+%description devel -l pl.UTF-8
+Pliki nag艂贸wkowe biblioteki RtAudio.
 
 %package static
 Summary:	Static RtAudio library
-Summary(pl):	Statyczna biblioteka RtAudio
+Summary(pl.UTF-8):   Statyczna biblioteka RtAudio
 Group:		Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
 
 %description static
 Static RtAudio library.
 
-%description static -l pl
+%description static -l pl.UTF-8
 Statyczna biblioteka RtAudio.
 
 %prep
