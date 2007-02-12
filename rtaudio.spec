@@ -1,5 +1,5 @@
 Summary:	RtAudio - set of C++ classes providing common API for realtime audio I/O
-Summary(pl.UTF-8):   RtAudio - zbiór klas C++ udostępniających wspólne API do we/wy dźwięku
+Summary(pl.UTF-8):	RtAudio - zbiór klas C++ udostępniających wspólne API do we/wy dźwięku
 Name:		rtaudio
 Version:	3.0.3
 Release:	1
@@ -28,7 +28,7 @@ i Windows (DirectSound i ASIO).
 
 %package devel
 Summary:	Header files for RtAudio library
-Summary(pl.UTF-8):   Pliki nagłówkowe biblioteki RtAudio
+Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki RtAudio
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	alsa-lib-devel
@@ -43,7 +43,7 @@ Pliki nagłówkowe biblioteki RtAudio.
 
 %package static
 Summary:	Static RtAudio library
-Summary(pl.UTF-8):   Statyczna biblioteka RtAudio
+Summary(pl.UTF-8):	Statyczna biblioteka RtAudio
 Group:		Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
 
