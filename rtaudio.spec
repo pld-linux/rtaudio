@@ -1,12 +1,12 @@
 Summary:	RtAudio - set of C++ classes providing common API for realtime audio I/O
 Summary(pl.UTF-8):	RtAudio - zbiór klas C++ udostępniających wspólne API do we/wy dźwięku
 Name:		rtaudio
-Version:	4.0.7
+Version:	4.0.8
 Release:	1
 License:	MIT-like
 Group:		Libraries
 Source0:	http://www.music.mcgill.ca/~gary/rtaudio/release/%{name}-%{version}.tar.gz
-# Source0-md5:	5d1292abccffa37505d9c4cc177b1e4f
+# Source0-md5:	f76d8d18264e1bb6e017caf777deb48c
 URL:		http://www.music.mcgill.ca/~gary/rtaudio/
 BuildRequires:	alsa-lib-devel
 BuildRequires:	jack-audio-connection-kit-devel
@@ -86,7 +86,8 @@ rm -rf $RPM_BUILD_ROOT
 %doc doc/html/*
 %attr(755,root,root) %{_libdir}/librtaudio.so
 %{_libdir}/librtaudio.la
-%{_includedir}/Rt*.h
+%{_includedir}/RtAudio.h
+%{_includedir}/RtError.h
 
 %files static
 %defattr(644,root,root,755)
