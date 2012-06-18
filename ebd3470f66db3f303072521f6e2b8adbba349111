@@ -1,0 +1,4 @@
+- updated to 4.0.11
+- switched to included configure (changes soname to upstream's)
+- enabled pulseaudio support, disabled oss (broken on Linux currently)
+- added link patch (fixes pulseaudio build)
