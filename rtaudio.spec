@@ -1,17 +1,20 @@
 Summary:	RtAudio - set of C++ classes providing common API for realtime audio I/O
 Summary(pl.UTF-8):	RtAudio - zbiór klas C++ udostępniających wspólne API do we/wy dźwięku
 Name:		rtaudio
-Version:	4.0.10
+Version:	4.0.11
 Release:	1
 License:	MIT-like
 Group:		Libraries
 Source0:	http://www.music.mcgill.ca/~gary/rtaudio/release/%{name}-%{version}.tar.gz
-# Source0-md5:	68fc7fead74762e5fa3e8aa69ae1c10d
+# Source0-md5:	f383584987fa43affb848dc171d74fcd
+Patch0:		%{name}-link.patch
 URL:		http://www.music.mcgill.ca/~gary/rtaudio/
 BuildRequires:	alsa-lib-devel
+BuildRequires:	autoconf >= 2.50
 BuildRequires:	jack-audio-connection-kit-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	libtool
+BuildRequires:	pulseaudio-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -55,19 +58,25 @@ Statyczna biblioteka RtAudio.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
-#configure is used only for examples
+%{__autoconf}
+%configure \
+	--with-alsa \
+	--with-jack \
+	--with-pulse
+# NOTE: --with-oss is broken on Linux currently
 
-libtool --mode=compile --tag=CXX %{__cxx} -c %{rpmcxxflags} -o RtAudio.lo RtAudio.cpp -D__LINUX_OSS__ -D__LINUX_ALSA__ -D__LINUX_JACK__ -Iinclude
-libtool --mode=link --tag=CXX %{__cxx} %{rpmldflags} -o librtaudio.la RtAudio.lo -rpath %{_libdir} -ljack -lasound -lpthread
+%{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_includedir},%{_libdir}}
 
-libtool --mode=install install librtaudio.la $RPM_BUILD_ROOT%{_libdir}
-install RtAudio.h RtError.h $RPM_BUILD_ROOT%{_includedir}
+cp -dp librtaudio.* $RPM_BUILD_ROOT%{_libdir}
+cp -p RtAudio.h RtError.h $RPM_BUILD_ROOT%{_includedir}
+/sbin/ldconfig -n $RPM_BUILD_ROOT%{_libdir}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -79,13 +88,12 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc readme doc/release.txt
 %attr(755,root,root) %{_libdir}/librtaudio.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/librtaudio.so.0
+%attr(755,root,root) %ghost %{_libdir}/librtaudio.so.4
 
 %files devel
 %defattr(644,root,root,755)
 %doc doc/html/*
 %attr(755,root,root) %{_libdir}/librtaudio.so
-%{_libdir}/librtaudio.la
 %{_includedir}/RtAudio.h
 %{_includedir}/RtError.h
 
