@@ -1,19 +1,20 @@
 Summary:	RtAudio - set of C++ classes providing common API for realtime audio I/O
 Summary(pl.UTF-8):	RtAudio - zbiór klas C++ udostępniających wspólne API do we/wy dźwięku
 Name:		rtaudio
-Version:	4.0.11
+Version:	4.1.1
 Release:	1
 License:	MIT-like
 Group:		Libraries
 Source0:	http://www.music.mcgill.ca/~gary/rtaudio/release/%{name}-%{version}.tar.gz
-# Source0-md5:	f383584987fa43affb848dc171d74fcd
-Patch0:		%{name}-link.patch
+# Source0-md5:	99763d3187fbe24ca959a1b711c17984
+Patch0:		%{name}-libdir.patch
 URL:		http://www.music.mcgill.ca/~gary/rtaudio/
 BuildRequires:	alsa-lib-devel
 BuildRequires:	autoconf >= 2.50
 BuildRequires:	jack-audio-connection-kit-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	libtool
+BuildRequires:	pkgconfig
 BuildRequires:	pulseaudio-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -37,6 +38,7 @@ Requires:	%{name} = %{version}-%{release}
 Requires:	alsa-lib-devel
 Requires:	jack-audio-connection-kit-devel
 Requires:	libstdc++-devel
+Requires:	pulseaudio-devel
 
 %description devel
 Header files for RtAudio library.
@@ -61,6 +63,7 @@ Statyczna biblioteka RtAudio.
 %patch0 -p1
 
 %build
+%{__aclocal}
 %{__autoconf}
 %configure \
 	--with-alsa \
@@ -72,10 +75,13 @@ Statyczna biblioteka RtAudio.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_includedir},%{_libdir}}
+install -d $RPM_BUILD_ROOT{%{_bindir},%{_includedir},%{_libdir},%{_pkgconfigdir}}
 
-cp -dp librtaudio.* $RPM_BUILD_ROOT%{_libdir}
-cp -p RtAudio.h RtError.h $RPM_BUILD_ROOT%{_includedir}
+install rtaudio-config $RPM_BUILD_ROOT%{_bindir}
+cp -dp librtaudio.so* $RPM_BUILD_ROOT%{_libdir}
+cp -dp librtaudio.a $RPM_BUILD_ROOT%{_libdir}
+cp -p RtAudio.h $RPM_BUILD_ROOT%{_includedir}
+cp -p librtaudio.pc $RPM_BUILD_ROOT%{_pkgconfigdir}
 /sbin/ldconfig -n $RPM_BUILD_ROOT%{_libdir}
 
 %clean
@@ -93,9 +99,10 @@ rm -rf $RPM_BUILD_ROOT
 %files devel
 %defattr(644,root,root,755)
 %doc doc/html/*
+%attr(755,root,root) %{_bindir}/rtaudio-config
 %attr(755,root,root) %{_libdir}/librtaudio.so
 %{_includedir}/RtAudio.h
-%{_includedir}/RtError.h
+%{_pkgconfigdir}/librtaudio.pc
 
 %files static
 %defattr(644,root,root,755)
