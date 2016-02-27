@@ -1,19 +1,21 @@
 Summary:	RtAudio - set of C++ classes providing common API for realtime audio I/O
 Summary(pl.UTF-8):	RtAudio - zbiór klas C++ udostępniających wspólne API do we/wy dźwięku
 Name:		rtaudio
-Version:	4.1.1
+Version:	4.1.2
 Release:	1
 License:	MIT-like
 Group:		Libraries
 Source0:	http://www.music.mcgill.ca/~gary/rtaudio/release/%{name}-%{version}.tar.gz
-# Source0-md5:	99763d3187fbe24ca959a1b711c17984
+# Source0-md5:	28a8fe13052e47af0aeb55d50d0637d1
 Patch0:		%{name}-libdir.patch
+Patch1:		%{name}-pulse.patch
 URL:		http://www.music.mcgill.ca/~gary/rtaudio/
 BuildRequires:	alsa-lib-devel
 BuildRequires:	autoconf >= 2.50
+BuildRequires:	automake >= 1:1.14
 BuildRequires:	jack-audio-connection-kit-devel
 BuildRequires:	libstdc++-devel
-BuildRequires:	libtool
+BuildRequires:	libtool >= 2:2
 BuildRequires:	pkgconfig
 BuildRequires:	pulseaudio-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -61,10 +63,13 @@ Statyczna biblioteka RtAudio.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 %build
-%{__aclocal}
+%{__libtoolize}
+%{__aclocal} -I m4
 %{__autoconf}
+%{__automake}
 %configure \
 	--with-alsa \
 	--with-jack \
@@ -75,14 +80,12 @@ Statyczna biblioteka RtAudio.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_bindir},%{_includedir},%{_libdir},%{_pkgconfigdir}}
 
-install rtaudio-config $RPM_BUILD_ROOT%{_bindir}
-cp -dp librtaudio.so* $RPM_BUILD_ROOT%{_libdir}
-cp -dp librtaudio.a $RPM_BUILD_ROOT%{_libdir}
-cp -p RtAudio.h $RPM_BUILD_ROOT%{_includedir}
-cp -p librtaudio.pc $RPM_BUILD_ROOT%{_pkgconfigdir}
-/sbin/ldconfig -n $RPM_BUILD_ROOT%{_libdir}
+%{__make} install \
+	DESTDIR=$RPM_BUILD_ROOT
+
+# obsoleted by pkg-config
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/librtaudio.la
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -94,15 +97,14 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc readme doc/release.txt
 %attr(755,root,root) %{_libdir}/librtaudio.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/librtaudio.so.4
+%attr(755,root,root) %ghost %{_libdir}/librtaudio.so.5
 
 %files devel
 %defattr(644,root,root,755)
 %doc doc/html/*
-%attr(755,root,root) %{_bindir}/rtaudio-config
 %attr(755,root,root) %{_libdir}/librtaudio.so
-%{_includedir}/RtAudio.h
-%{_pkgconfigdir}/librtaudio.pc
+%{_includedir}/rtaudio
+%{_pkgconfigdir}/rtaudio.pc
 
 %files static
 %defattr(644,root,root,755)

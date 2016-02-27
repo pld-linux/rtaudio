@@ -1,17 +1,10 @@
---- rtaudio-4.1.1/librtaudio.pc.in.orig	2014-04-26 20:39:15.000000000 +0200
-+++ rtaudio-4.1.1/librtaudio.pc.in	2014-07-13 21:58:25.532711879 +0200
+--- rtaudio-4.1.2/rtaudio.pc.in.orig	2016-02-27 16:54:39.535489214 +0100
++++ rtaudio-4.1.2/rtaudio.pc.in	2016-02-27 17:06:31.722125993 +0100
 @@ -1,6 +1,6 @@
  prefix=@prefix@
  exec_prefix=${prefix}
 -libdir=${exec_prefix}/lib
 +libdir=@libdir@
- includedir=${prefix}/include        
+ includedir=${prefix}/include/rtaudio        
  
  Name: librtaudio
-@@ -9,4 +9,4 @@
- Requires: @req@ 
- Libs: -L${libdir} -lrtaudio
- Libs.private: -lpthread
--Cflags: -pthread -I${includedir} @CPPFLAGS@
-\ Brak znaku nowej linii na koñcu pliku
-+Cflags: -pthread -I${includedir} @CPPFLAGS@
