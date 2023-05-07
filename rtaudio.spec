@@ -1,23 +1,24 @@
 Summary:	RtAudio - set of C++ classes providing common API for realtime audio I/O
 Summary(pl.UTF-8):	RtAudio - zbiór klas C++ udostępniających wspólne API do we/wy dźwięku
 Name:		rtaudio
-Version:	4.1.2
+Version:	5.2.0
 Release:	1
 License:	MIT-like
 Group:		Libraries
 Source0:	http://www.music.mcgill.ca/~gary/rtaudio/release/%{name}-%{version}.tar.gz
-# Source0-md5:	28a8fe13052e47af0aeb55d50d0637d1
+# Source0-md5:	2482b10c83b5376348b39b81359db447
 Patch0:		%{name}-libdir.patch
-Patch1:		%{name}-pulse.patch
 URL:		http://www.music.mcgill.ca/~gary/rtaudio/
 BuildRequires:	alsa-lib-devel
 BuildRequires:	autoconf >= 2.50
+BuildRequires:	autoconf-archive
 BuildRequires:	automake >= 1:1.14
 BuildRequires:	jack-audio-connection-kit-devel
-BuildRequires:	libstdc++-devel
+BuildRequires:	libstdc++-devel >= 6:4.7
 BuildRequires:	libtool >= 2:2
 BuildRequires:	pkgconfig
 BuildRequires:	pulseaudio-devel
+BuildRequires:	rpm-build >= 4.6
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -39,7 +40,7 @@ Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	alsa-lib-devel
 Requires:	jack-audio-connection-kit-devel
-Requires:	libstdc++-devel
+Requires:	libstdc++-devel >= 6:4.7
 Requires:	pulseaudio-devel
 
 %description devel
@@ -60,10 +61,25 @@ Static RtAudio library.
 %description static -l pl.UTF-8
 Statyczna biblioteka RtAudio.
 
+%package apidocs
+Summary:	API documentation for RtAudio library
+Summary(pl.UTF-8):	Dokumentacja API biblioteki RtAudio
+Group:		Documentation
+BuildArch:	noarch
+
+%description apidocs
+API documentation for RtAudio library.
+
+%description apidocs -l pl.UTF-8
+Dokumentacja API biblioteki RtAudio.
+
 %prep
 %setup -q
 %patch0 -p1
-%patch1 -p1
+
+# missing in dist, restore from autoconf-archive
+install -d m4
+cp -p /usr/share/aclocal/ax_cxx_compile_stdcxx.m4 m4
 
 %build
 %{__libtoolize}
@@ -71,6 +87,7 @@ Statyczna biblioteka RtAudio.
 %{__autoconf}
 %{__automake}
 %configure \
+	--disable-silent-rules \
 	--with-alsa \
 	--with-jack \
 	--with-pulse
@@ -95,13 +112,12 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc readme doc/release.txt
+%doc README.md doc/release.txt
 %attr(755,root,root) %{_libdir}/librtaudio.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/librtaudio.so.5
+%attr(755,root,root) %ghost %{_libdir}/librtaudio.so.6
 
 %files devel
 %defattr(644,root,root,755)
-%doc doc/html/*
 %attr(755,root,root) %{_libdir}/librtaudio.so
 %{_includedir}/rtaudio
 %{_pkgconfigdir}/rtaudio.pc
@@ -109,3 +125,7 @@ rm -rf $RPM_BUILD_ROOT
 %files static
 %defattr(644,root,root,755)
 %{_libdir}/librtaudio.a
+
+%files apidocs
+%defattr(644,root,root,755)
+%doc doc/html/*
