@@ -75,7 +75,7 @@ Dokumentacja API biblioteki RtAudio.
 
 %prep
 %setup -q
-%patch0 -p1
+%patch -P0 -p1
 
 # missing in dist, restore from autoconf-archive
 install -d m4
